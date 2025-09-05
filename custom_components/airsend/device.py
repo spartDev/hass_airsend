@@ -29,6 +29,8 @@ class Device:
         self._note = None
         self._bind = None
         self._refresh = 5 * 60
+        self._opening_duration = None
+        self._closing_duration = None
         try:
             self._uid = options["id"]
         except KeyError:
@@ -66,6 +68,14 @@ class Device:
         try:
             self._refresh = int(options["refresh"])
         except KeyError:
+            pass
+        try:
+            self._opening_duration = float(options["opening_duration"])
+        except (KeyError, ValueError, TypeError):
+            pass
+        try:
+            self._closing_duration = float(options["closing_duration"])
+        except (KeyError, ValueError, TypeError):
             pass
 
     @property
@@ -152,6 +162,16 @@ class Device:
         if type(self._refresh) is int and self._refresh > 0:
             return self._refresh
         return (5 * 60)
+    
+    @property
+    def opening_duration(self) -> float:
+        """Return opening duration in seconds."""
+        return self._opening_duration if self._opening_duration else 25.0
+    
+    @property
+    def closing_duration(self) -> float:
+        """Return closing duration in seconds."""
+        return self._closing_duration if self._closing_duration else 25.0
 
     def bind(self) -> bool:
         """Bind a channel to listen."""
