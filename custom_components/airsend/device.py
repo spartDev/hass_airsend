@@ -165,13 +165,17 @@ class Device:
     
     @property
     def opening_duration(self) -> float:
-        """Return opening duration in seconds."""
-        return self._opening_duration if self._opening_duration else 25.0
+        """Return opening duration in seconds with validation."""
+        duration = self._opening_duration if self._opening_duration else 25.0
+        # Enforce minimum 1 second, maximum 300 seconds (5 minutes)
+        return max(1.0, min(300.0, duration))
     
     @property
     def closing_duration(self) -> float:
-        """Return closing duration in seconds."""
-        return self._closing_duration if self._closing_duration else 25.0
+        """Return closing duration in seconds with validation."""
+        duration = self._closing_duration if self._closing_duration else 25.0
+        # Enforce minimum 1 second, maximum 300 seconds (5 minutes)
+        return max(1.0, min(300.0, duration))
 
     def bind(self) -> bool:
         """Bind a channel to listen."""
